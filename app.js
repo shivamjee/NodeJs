@@ -18,7 +18,7 @@ const url = "mongodb://localhost:27017/conFusion";
 const connect = mongoose.connect(url);
 
 connect.then((db)=>{
-	console.log("Connected ro db software");
+	console.log("Connected to db software");
 })
 .catch((err)=>{
 	console.log("error");
