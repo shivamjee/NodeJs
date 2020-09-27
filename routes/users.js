@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 var User = require('../models/user');
 const mongoose = require("mongoose");
 var passport = require('passport');
+var authenticate = require('../authenticate');
 
 var router = express.Router();
 router.use(bodyParser.json());
@@ -35,11 +36,15 @@ router.post('/signup', (req, res, next) => {
 
 
 //passport.authenticate('local') checks for user id pass and if it is successful,
-// then the fucntions after it will be executed
+// then the fucntions after it will be executed and user field is added to req body
 router.post('/login', passport.authenticate('local'),(req, res, next) => {
+
+    var token = authenticate.getToken({_id:req.user._id});
+
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    res.json({success:true,status: 'You have successfully logged in'});   
+    //token added to response
+    res.json({success:true,token: token,status: 'You have successfully logged in'});
 });
 
 
