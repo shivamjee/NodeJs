@@ -18,15 +18,17 @@ const commentSchema = new Schema
 			type: String,
 			required: true
 		},
+		//author connected to the person actually commenting
 		author:{
-			type: String,
-			required: true
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'user'
 		}
 	},
 	{
 		timestamps: true
 	}
 );
+
 const dishSchema = new Schema
 (
 	{

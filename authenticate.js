@@ -20,7 +20,7 @@ passport.deserializeUser(User.deserializeUser());
 exports.getToken = function(user)
 {
 	//create a token
-	return jwt.sign(user,config.secretKey,{expiresIn: 60});
+	return jwt.sign(user,config.secretKey,{expiresIn: 3600});
 };
 
 var opts = {};
