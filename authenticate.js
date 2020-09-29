@@ -55,4 +55,27 @@ exports.jwtPassport = passport.use(
 //similar function used in users.js with different startegy
 exports.verifyUser = passport.authenticate('jwt',{session:false});
 
+exports.verifyAdmin = function(req,res,next){
+	if(req.user.admin == true)
+	{
+		next();
+	}
+	else
+	{
+		var err = new Error("You are not an admin");
+		err.status = 401;
+		next(err);
+
+	}
+}
+/*exports.verifyOrdinaryUser = function(req,res,next){
+	if(req.user.admin == false)
+		next();
+	else
+	{
+		var err = new Error("You are not an admin");
+		res.statusCode = 403
+
+	}
+}*/
 
