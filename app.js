@@ -25,7 +25,7 @@ var Leaders = require('./models/leaders');
 
 
 const url = config.mongoUrl;
-const connect = mongoose.connect(url, {useNewUrlParser: true });
+const connect = mongoose.connect(url, {useNewUrlParser: true,useCreateIndex: true });
 
 connect.then((db)=>{
 	console.log("\nConnected to db software\n");
@@ -37,6 +37,17 @@ connect.then((db)=>{
 
 
 var app = express();
+
+app.all('*',(req,res,next)=>{
+	//if request on secure then req will automatically get a secure header with value true
+	if(req.secure){
+		return next();
+	}
+	else{
+		//secPort defined in wwww in bin
+		res.redirect(307,'https://'+req.hostname+':'+app.get('secPort')+req.url);
+	}
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
