@@ -4,12 +4,14 @@ var User = require('../models/user');
 const mongoose = require("mongoose");
 var passport = require('passport');
 var authenticate = require('../authenticate');
+const cors = require('./cors');
+
 
 var router = express.Router();
 router.use(bodyParser.json());
 
 /* GET users listing. */
-router.get('/', authenticate.verifyUser,authenticate.verifyAdmin,function(req, res, next) {
+router.get('/',cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,function(req, res, next) {
   //res.send('respond with a resource');
   
   User.find({})
@@ -21,7 +23,7 @@ router.get('/', authenticate.verifyUser,authenticate.verifyAdmin,function(req, r
   .catch((err)=>next(err));
 });
 
-router.post('/signup', (req, res, next) => {
+router.post('/signup', cors.corsWithOptions,(req, res, next) => {
   User.register(
     new User({username: req.body.username}),
     req.body.password,
@@ -59,7 +61,7 @@ router.post('/signup', (req, res, next) => {
 
 //passport.authenticate('local') checks for user id pass and if it is successful,
 // then the fucntions after it will be executed and user field is added to req body
-router.post('/login', passport.authenticate('local'),(req, res, next) => {
+router.post('/login',cors.corsWithOptions,passport.authenticate('local'),(req, res, next) => {
 
     var token = authenticate.getToken({_id:req.user._id});
 
